@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>reGalia — Fine Jewellery, New York</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:      #FAFAF6;
+      --surface: #F2EEE5;
+      --blue:    #1B4F8A;
+      --blue2:   #2566A8;
+      --gold:    #B5904A;
+      --text:    #181716;
+      --muted:   #6A6460;
+      --dim:     #A8A39D;
+      --border:  #E3DDD5;
+      --nav-h:   68px;
+    }
+
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 300; -webkit-font-smoothing: antialiased; }
+
+    /* ── Banner ── */
+    .banner { background: var(--blue); color: rgba(242,238,229,0.85); text-align: center; padding: 9px 16px; font-family: 'Inter', sans-serif; font-size: 9px; letter-spacing: 2.5px; }
+
+    /* ── Nav ── */
+    nav {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 0 56px; height: var(--nav-h);
+      border-bottom: 1px solid var(--border);
+      position: sticky; top: 0;
+      background: rgba(250,250,246,0.96); backdrop-filter: blur(12px);
+      z-index: 200;
+    }
+    .logo { font-size: 17px; letter-spacing: 9px; font-weight: 400; }
+    .logo span { color: var(--gold); }
+    .nav-links { display: flex; gap: 32px; list-style: none; }
+    .nav-links a { font-size: 9px; letter-spacing: 2.5px; color: var(--muted); text-decoration: none; font-family: 'Inter', sans-serif; transition: color 0.2s; }
+    .nav-links a:hover { color: var(--blue); }
+    .nav-r { font-size: 9px; letter-spacing: 2px; color: var(--muted); font-family: 'Inter', sans-serif; cursor: pointer; display: flex; gap: 20px; }
+
+    /* ══════════════════════════
+       HERO
+    ══════════════════════════ */
+    .hero {
+      position: relative;
+      height: calc(100vh - var(--nav-h) - 37px);
+      overflow: hidden;
+      display: flex; align-items: flex-end; justify-content: center; /* CTA at bottom */
+      text-align: center;
+    }
+    #hero-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      transform-origin: center center;
+      will-change: transform;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0;
+      /* Light at top to show model clearly; dark at bottom for CTA readability */
+      background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0.08) 50%, rgba(0,0,0,0.72) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 0 40px 72px; /* bottom padding keeps CTA off the edge */
+      width: 100%;
+    }
+    #h-line { width: 1px; height: 0; background: var(--gold); margin: 0 auto 32px; }
+    .h-ey  { font-size: 9px; letter-spacing: 5px; color: rgba(181,144,74,0.9); font-family: 'Inter', sans-serif; margin-bottom: 28px; opacity: 0; transform: translateY(14px); }
+    .h-h1  { font-size: clamp(46px, 6vw, 78px); font-weight: 300; line-height: 1.1; letter-spacing: 2px; color: #F2EEE5; margin-bottom: 22px; opacity: 0; transform: translateY(14px); }
+    .h-sub { font-size: 12px; color: rgba(242,238,229,0.7); letter-spacing: 2px; font-family: 'Inter', sans-serif; margin-bottom: 48px; opacity: 0; transform: translateY(14px); }
+    .h-btns { display: flex; gap: 14px; opacity: 0; transform: translateY(14px); }
+
+    /* Buttons */
+    .btn-solid        { padding: 13px 40px; background: var(--blue);  color: #F2EEE5; font-size: 9px; letter-spacing: 3px; font-family: 'Inter', sans-serif; border: none; cursor: pointer; transition: background 0.3s; }
+    .btn-solid:hover  { background: var(--blue2); }
+    .btn-outline-light { padding: 13px 40px; border: 1px solid rgba(242,238,229,0.55); color: #F2EEE5; font-size: 9px; letter-spacing: 3px; font-family: 'Inter', sans-serif; background: transparent; cursor: pointer; transition: all 0.3s; }
+    .btn-outline-light:hover { background: rgba(242,238,229,0.12); }
+    .btn-outline      { padding: 13px 40px; border: 1px solid var(--blue); color: var(--blue); font-size: 9px; letter-spacing: 3px; font-family: 'Inter', sans-serif; background: transparent; cursor: pointer; transition: all 0.3s; }
+    .btn-outline:hover { background: var(--blue); color: #F2EEE5; }
+    .btn-ghost-light  { padding: 13px 40px; border: 1px solid rgba(242,238,229,0.4); color: #F2EEE5; font-size: 9px; letter-spacing: 3px; font-family: 'Inter', sans-serif; background: transparent; cursor: pointer; transition: all 0.3s; }
+    .btn-ghost-light:hover { background: rgba(242,238,229,0.1); }
+
+    /* ══════════════════════════
+       STICKY SPLIT — scroll-driven
+       Wrapper is tall; both columns sticky.
+       Left: one text panel at a time.
+       Right: image reveals proportionally to scroll.
+    ══════════════════════════ */
+    .split-wrapper {
+      position: relative;
+      height: 600vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      background: var(--bg);   /* gap colour between panels */
+    }
+
+    /* Left — sticky text panel */
+    .split-left {
+      position: sticky;
+      top: var(--nav-h);
+      height: calc(100vh - var(--nav-h));
+      /* No border-right — the gap on split-right provides visual separation */
+      overflow: hidden;
+    }
+
+    /* Each feature item fills the panel, shows one at a time */
+    .feature-item {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 64px 56px;
+      opacity: 0;          /* JS controls visibility */
+    }
+    .feature-num   { font-size: 9px; color: var(--dim); font-family: 'Inter', sans-serif; letter-spacing: 2px; margin-bottom: 20px; }
+    .feature-title { font-size: 40px; font-weight: 300; letter-spacing: 1px; line-height: 1.2; margin-bottom: 20px; }
+    .feature-rule  { width: 36px; height: 1px; background: var(--border); margin-bottom: 22px; }
+    .feature-body  { font-size: 13px; line-height: 1.95; color: var(--muted); font-family: 'Inter', sans-serif; max-width: 340px; }
+    .feature-price { font-size: 24px; color: var(--gold); letter-spacing: 2px; margin-top: 28px; font-weight: 400; font-family: 'Cormorant Garamond', serif; }
+    .feature-cta   { margin-top: 20px; font-size: 9px; letter-spacing: 3px; color: var(--blue); font-family: 'Inter', sans-serif; cursor: pointer; border-bottom: 1px solid var(--blue); padding-bottom: 2px; display: inline-block; }
+
+    /* Right — sticky column wrapper with padding that creates
+       a real gap on BOTH sides (Intrepid style).
+       The padding pushes the visual panel away from both edges;
+       the background of split-wrapper shows through the gaps. */
+    .split-right-col {
+      position: sticky;
+      top: var(--nav-h);
+      height: calc(100vh - var(--nav-h));
+    }
+    .split-right {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+      background: var(--text);
+    }
+
+    /* Panels stack; reveal driven by translateY from scroll.
+       ::before creates a cream strip at the top of each panel —
+       as the incoming panel slides up, this strip is the visible
+       gap at the seam, clipped to rounded corners on both sides. */
+    .panel {
+      position: absolute; inset: 0;
+      overflow: hidden;
+    }
+    .panel::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: rgba(180,175,168,0.55);
+      z-index: 2;
+    }
+    .panel img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block;
+    }
+
+    /* ══════════════════════════
+       SCROLL-SHRINK IMAGE
+       Intrepid-style: starts at 62% width, expands to 92%,
+       then contracts to 28% — sticky inside a tall wrapper.
+       Left-anchored; cream bg shows on the right throughout.
+    ══════════════════════════ */
+    .section-strip {
+      height: 1px;
+      background: var(--border);
+    }
+    .shrink-section {
+      position: relative;
+      height: 250vh;
+      background: var(--bg);
+    }
+    .shrink-img {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 62%;
+      height: 100vh;
+      overflow: hidden;
+      will-change: width;
+    }
+    .shrink-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      display: block;
+    }
+
+    /* ══════════════════════════
+       PRODUCTS
+    ══════════════════════════ */
+    .products  { padding: 96px 56px; background: var(--bg); }
+    .sec-head  { text-align: center; margin-bottom: 64px; }
+    .eyebrow   { font-size: 9px; letter-spacing: 5px; color: var(--gold); font-family: 'Inter', sans-serif; margin-bottom: 10px; }
+    .sec-title { font-size: 30px; font-weight: 300; letter-spacing: 1px; }
+    .rule      { width: 36px; height: 1px; background: var(--border); margin: 16px auto 0; }
+
+    .pgrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; max-width: 1100px; margin: 0 auto; }
+
+    .pcard { cursor: pointer; }
+    .pimg  { aspect-ratio: 3/4; overflow: hidden; margin-bottom: 16px; position: relative; border: 1px solid var(--border); transition: border-color 0.35s; }
+    .pcard:hover .pimg { border-color: var(--gold); }
+    .pimg img { width: 100%; height: 100%; object-fit: cover; object-position: center top; transition: transform 0.7s cubic-bezier(0.16,1,0.3,1); }
+    .pcard:hover .pimg img { transform: scale(1.05); }
+    .pover { position: absolute; bottom: 0; left: 0; right: 0; background: var(--blue); padding: 10px; text-align: center; font-size: 9px; letter-spacing: 3px; color: #F2EEE5; font-family: 'Inter', sans-serif; transform: translateY(100%); transition: transform 0.3s cubic-bezier(0.16,1,0.3,1); }
+    .pcard:hover .pover { transform: translateY(0); }
+    .pcat   { font-size: 9px; letter-spacing: 3px; color: var(--dim); font-family: 'Inter', sans-serif; margin-bottom: 5px; }
+    .pname  { font-size: 15px; font-weight: 300; margin-bottom: 7px; }
+    .pprice { font-size: 14px; color: var(--gold); letter-spacing: 1px; }
+
+    /* ══════════════════════════
+       3-COL STRIP
+    ══════════════════════════ */
+    .strip { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .strip-col { padding: 56px 48px; border-right: 1px solid var(--border); }
+    .strip-col:last-child { border-right: none; }
+    .strip-num   { font-size: 9px; color: var(--dim); font-family: 'Inter', sans-serif; letter-spacing: 2px; margin-bottom: 24px; }
+    .strip-label { font-size: 24px; font-weight: 300; letter-spacing: 0.5px; margin-bottom: 10px; }
+    .strip-rule  { width: 28px; height: 1px; background: var(--border); margin-bottom: 14px; }
+    .strip-body  { font-size: 12px; color: var(--muted); font-family: 'Inter', sans-serif; line-height: 1.8; }
+    .strip-icon  { margin-top: 28px; opacity: 0.35; }
+
+    /* ══════════════════════════
+       BLUE BAND
+    ══════════════════════════ */
+    .dark-band {
+      background: var(--blue); color: #F2EEE5;
+      padding: 100px 56px;
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 80px; align-items: center;
+    }
+    .dark-band h2 { font-size: 42px; font-weight: 300; letter-spacing: 1.5px; line-height: 1.2; margin-bottom: 24px; }
+    .dark-band p  { font-size: 13px; line-height: 1.95; font-family: 'Inter', sans-serif; color: rgba(242,238,229,0.6); margin-bottom: 36px; }
+    .dark-img     { aspect-ratio: 4/5; overflow: hidden; border: 1px solid rgba(242,238,229,0.1); }
+    .dark-img img { width: 100%; height: 100%; object-fit: cover; object-position: center top; }
+
+    /* ══════════════════════════
+       SERVICES
+    ══════════════════════════ */
+    .services { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--border); }
+    .svc      { background: var(--bg); padding: 52px 40px; text-align: center; }
+    .svc-mark { font-size: 16px; color: var(--gold); display: block; margin-bottom: 18px; }
+    .svc h4   { font-size: 15px; font-weight: 400; letter-spacing: 0.5px; margin-bottom: 10px; }
+    .svc p    { font-size: 11px; color: var(--muted); font-family: 'Inter', sans-serif; line-height: 1.8; }
+
+    /* ══════════════════════════
+       FOOTER
+    ══════════════════════════ */
+    footer    { background: var(--text); color: #F2EEE5; padding: 72px 56px 44px; }
+    .ft       { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 56px; margin-bottom: 56px; padding-bottom: 56px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+    .ft-brand { font-size: 15px; letter-spacing: 8px; font-weight: 300; margin-bottom: 14px; }
+    .ft-brand span { color: var(--gold); }
+    .ft-tag   { font-size: 11px; color: rgba(242,238,229,0.38); font-family: 'Inter', sans-serif; line-height: 1.8; }
+    .ft-col h5 { font-size: 9px; letter-spacing: 3px; color: rgba(242,238,229,0.32); font-family: 'Inter', sans-serif; margin-bottom: 18px; font-weight: 400; }
+    .ft-col ul { list-style: none; }
+    .ft-col ul li { margin-bottom: 11px; }
+    .ft-col ul li a { font-size: 12px; color: rgba(242,238,229,0.6); text-decoration: none; font-family: 'Inter', sans-serif; transition: color 0.2s; }
+    .ft-col ul li a:hover { color: var(--gold); }
+    .fb { display: flex; justify-content: space-between; font-size: 9px; color: rgba(242,238,229,0.25); font-family: 'Inter', sans-serif; letter-spacing: 1.5px; }
+
+    /* Scroll-reveal classes (for sections below the scroll-shrink) */
+    .sa { opacity: 0; transform: translateY(28px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
+    .sl { opacity: 0; transform: translateX(-28px); transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
+    .sr { opacity: 0; transform: translateX(28px);  transition: opacity 0.9s cubic-bezier(0.16,1,0.3,1), transform 0.9s cubic-bezier(0.16,1,0.3,1); }
+    .sc { opacity: 0; transform: scale(0.94);       transition: opacity 0.85s ease, transform 0.85s cubic-bezier(0.16,1,0.3,1); }
+    .sa.on, .sl.on, .sr.on, .sc.on { opacity: 1; transform: none; }
+    .d1 { transition-delay: 0.1s !important; }
+    .d2 { transition-delay: 0.2s !important; }
+    .d3 { transition-delay: 0.3s !important; }
+    .d4 { transition-delay: 0.4s !important; }
+
+    /* ══════════════════════════
+       STICKY SPLIT — scroll-driven
+    ══════════════════════════ */
+    .split-wrapper {
+      position: relative;
+      height: 600vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+    .split-left {
+      position: sticky;
+      top: var(--nav-h);
+      height: calc(100vh - var(--nav-h));
+      overflow: hidden;
+    }
+    .feature-item {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 64px 56px;
+      opacity: 0;
+    }
+    .feature-num   { font-size: 9px; color: var(--dim); font-family: 'Inter', sans-serif; letter-spacing: 2px; margin-bottom: 20px; }
+    .feature-title { font-size: 40px; font-weight: 300; letter-spacing: 1px; line-height: 1.2; margin-bottom: 20px; }
+    .feature-rule  { width: 36px; height: 1px; background: var(--border); margin-bottom: 22px; }
+    .feature-body  { font-size: 13px; line-height: 1.95; color: var(--muted); font-family: 'Inter', sans-serif; max-width: 340px; }
+    .feature-price { font-size: 24px; color: var(--gold); letter-spacing: 2px; margin-top: 28px; font-weight: 400; font-family: 'Cormorant Garamond', serif; }
+    .feature-cta   { margin-top: 20px; font-size: 9px; letter-spacing: 3px; color: var(--blue); font-family: 'Inter', sans-serif; cursor: pointer; border-bottom: 1px solid var(--blue); padding-bottom: 2px; display: inline-block; }
+    .split-right {
+      position: relative;
+      height: 100%;
+      overflow: hidden;
+      background: var(--text);
+    }
+    .panel { position: absolute; inset: 0; overflow: hidden; }
+    .panel img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+
+    /* ══════════════════════════
+       SCROLL-SHRINK IMAGE
+    ══════════════════════════ */
+    .shrink-section {
+      position: relative;
+      height: 250vh;
+      background: var(--bg);
+    }
+    .shrink-img {
+      position: sticky;
+      top: 0; left: 0;
+      width: 62%; height: 100vh;
+      overflow: hidden;
+      will-change: width;
+    }
+    .shrink-img img { width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block; }
+
+    /* ══════════════════════════
+       SEQUENTIAL SCROLL-SHRINK SECTIONS
+       (kept for future use — not currently rendered)
+    ══════════════════════════ */
+    .ss-section {
+      position: relative;
+      height: 200vh;
+      background: var(--bg);
+    }
+    .ss-sticky {
+      position: sticky;
+      top: var(--nav-h);
+      height: calc(100vh - var(--nav-h));
+      overflow: hidden;
+    }
+    .ss-img {
+      position: absolute;
+      top: 0; left: 0;
+      height: 100%;
+      width: 100%;
+      overflow: hidden;
+      will-change: width, border-radius;
+    }
+    .ss-img img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+    }
+    /* Subtle product number tag visible on full-bleed image */
+    .ss-label {
+      position: absolute;
+      bottom: 40px; left: 48px;
+      z-index: 3;
+    }
+    .ss-label-num {
+      font-size: 9px; letter-spacing: 4px; color: rgba(242,238,229,0.45);
+      font-family: 'Inter', sans-serif;
+    }
+    /* Product text panel — revealed on the right as image shrinks */
+    .ss-text {
+      position: absolute;
+      top: 0; right: 0;
+      width: 40%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 64px 56px 64px 52px;
+      opacity: 0;
+      pointer-events: none;
+    }
+    .ss-text .feature-title { font-size: 36px; }
+  </style>
+</head>
+<body>
+
+<div class="banner">COMPLIMENTARY SHIPPING &amp; RETURNS ON ALL US ORDERS &nbsp;·&nbsp; HANDCRAFTED IN NEW YORK CITY</div>
+
+<nav>
+  <div class="logo"><span>re</span>GALIA</div>
+  <ul class="nav-links">
+    <li><a href="#">JEWELLERY</a></li>
+    <li><a href="#">COLLECTIONS</a></li>
+    <li><a href="#">THE ATELIER</a></li>
+    <li><a href="#">GIFTS</a></li>
+    <li><a href="#">CONTACT</a></li>
+  </ul>
+  <div class="nav-r"><span>SEARCH</span><span>BAG (0)</span></div>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <img id="hero-img" src="img/img-hero.jpg" alt="Fine jewellery by reGalia"/>
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div id="h-line"></div>
+    <div class="h-ey"  id="h-ey">HANDCRAFTED FINE JEWELLERY · NEW YORK CITY</div>
+    <h1 class="h-h1"  id="h-h1">Crafted for the<br><em>Moments That Matter</em></h1>
+    <p  class="h-sub" id="h-sub">Each piece made by hand. Each one made to last.</p>
+    <div class="h-btns" id="h-btns">
+      <button class="btn-solid">EXPLORE THE COLLECTION</button>
+      <button class="btn-outline-light">OUR STORY</button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ STICKY SPLIT — scroll-driven ══ -->
+<div class="split-wrapper" id="splitWrapper">
+
+  <div class="split-left" id="splitLeft">
+
+    <div class="feature-item" id="fi-0">
+      <div class="feature-num">A01</div>
+      <div class="feature-title">Elara Link<br>Earrings</div>
+      <div class="feature-rule"></div>
+      <div class="feature-body">Oversized 18k gold link drops with a polished oval profile and single floating bead detail. Lightweight enough for all day, bold enough to stand alone. Pairs with the Elara knot necklace and cuff.</div>
+      <div class="feature-price">$1,100</div>
+      <span class="feature-cta">VIEW PIECE</span>
+    </div>
+
+    <div class="feature-item" id="fi-1">
+      <div class="feature-num">A02</div>
+      <div class="feature-title">Maharani<br>Bridal Set</div>
+      <div class="feature-rule"></div>
+      <div class="feature-body">22k gold choker with rubies, south sea pearls, and hand-engraved floral work, presented with matching jhumka earrings, stacked bangles, and cocktail ring. A full bridal set. Made to order — 6 week lead time.</div>
+      <div class="feature-price">$6,800</div>
+      <span class="feature-cta">ENQUIRE</span>
+    </div>
+
+    <div class="feature-item" id="fi-2">
+      <div class="feature-num">A03</div>
+      <div class="feature-title">Hardware<br>Chain Necklace</div>
+      <div class="feature-rule"></div>
+      <div class="feature-body">A bold 18k gold chain built on oversized rectangular links, hand-polished to a high shine. Worn alone as a statement or layered with finer chains. Available in 16" and 20" lengths. Matching bracelet sold separately.</div>
+      <div class="feature-price">$2,400</div>
+      <span class="feature-cta">VIEW PIECE</span>
+    </div>
+
+    <div class="feature-item" id="fi-3">
+      <div class="feature-num">A04</div>
+      <div class="feature-title">Obsidian<br>Signet Stack</div>
+      <div class="feature-rule"></div>
+      <div class="feature-body">Heavy-gauge sterling silver signet rings set with semi-precious stones — carnelian, obsidian, garnet. Each ring is cast individually with hand-chased detailing. Worn stacked or alone. Sizes 7–14 available.</div>
+      <div class="feature-price">From $380</div>
+      <span class="feature-cta">VIEW PIECE</span>
+    </div>
+
+    <div class="feature-item" id="fi-4">
+      <div class="feature-num">A05</div>
+      <div class="feature-title">Empire<br>Collar</div>
+      <div class="feature-rule"></div>
+      <div class="feature-body">A sculptural 18k gold collar formed from 22 individually hand-hammered rings, graduated in width and stacked to fill the neck. Inspired by ancient adornment. One piece exists. Comes with a certificate of uniqueness.</div>
+      <div class="feature-price">$3,200</div>
+      <span class="feature-cta">VIEW PIECE</span>
+    </div>
+
+    <div class="feature-item" id="fi-5">
+      <div class="feature-num">A06</div>
+      <div class="feature-title">Cascade<br>Diamond Set</div>
+      <div class="feature-rule"></div>
+      <div class="feature-body">An 18k white gold V-necklace set with 4.2 carats of round brilliant diamonds across seven graduating rows. Presented with matching cluster earrings and a pavé cocktail ring. Our most requested bridal commission.</div>
+      <div class="feature-price">$8,900</div>
+      <span class="feature-cta">ENQUIRE</span>
+    </div>
+
+  </div>
+
+  <div class="split-right-col">
+    <div class="split-right" id="splitRight">
+      <div class="panel" id="panel-0"><img src="img/slide1.jpg" alt="Elara Link Earrings"/></div>
+      <div class="panel" id="panel-1"><img src="img/slide2.jpg" alt="Maharani Bridal Set"/></div>
+      <div class="panel" id="panel-2"><img src="img/slide4.jpg" alt="Hardware Chain Necklace"/></div>
+      <div class="panel" id="panel-3"><img src="img/slide5.jpg" alt="Obsidian Signet Stack"/></div>
+      <div class="panel" id="panel-4"><img src="img/slide7.jpg" alt="Empire Collar"/></div>
+      <div class="panel" id="panel-5"><img src="img/slide9.jpg" alt="Cascade Diamond Set"/></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ══ SECTION STRIP TRANSITION ══ -->
+<div class="section-strip"></div>
+
+<!-- ══ SCROLL-SHRINK IMAGE ══ -->
+<div class="shrink-section" id="shrinkSection">
+  <div class="shrink-img" id="shrinkImg">
+    <img src="img/img3.jpg" alt="Craftsmanship"/>
+  </div>
+</div>
+
+<!-- ══ 3-COL STRIP ══ -->
+<div class="strip">
+  <div class="strip-col sa">
+    <div class="strip-num">A01</div>
+    <div class="strip-label">Handcrafted</div>
+    <div class="strip-rule"></div>
+    <div class="strip-body">Made entirely by hand in a private New York studio — no factory, no shortcuts.</div>
+    <div class="strip-icon"><svg width="38" height="38" viewBox="0 0 38 38" fill="none"><circle cx="19" cy="19" r="15" stroke="#1B4F8A" stroke-width="1"/><circle cx="19" cy="19" r="8" stroke="#1B4F8A" stroke-width="0.6"/><line x1="4" y1="19" x2="34" y2="19" stroke="#1B4F8A" stroke-width="0.6"/><line x1="19" y1="4" x2="19" y2="34" stroke="#1B4F8A" stroke-width="0.6"/></svg></div>
+  </div>
+  <div class="strip-col sa d2">
+    <div class="strip-num">A02</div>
+    <div class="strip-label">Ethically Sourced</div>
+    <div class="strip-rule"></div>
+    <div class="strip-body">Every stone traced to its origin and held to the highest ethical standards.</div>
+    <div class="strip-icon"><svg width="38" height="38" viewBox="0 0 38 38" fill="none"><polygon points="19,3 35,31 3,31" stroke="#1B4F8A" stroke-width="1" fill="none"/><polygon points="19,11 29,29 9,29" stroke="#1B4F8A" stroke-width="0.6" fill="none"/></svg></div>
+  </div>
+  <div class="strip-col sa d4">
+    <div class="strip-num">A03</div>
+    <div class="strip-label">Lifetime Care</div>
+    <div class="strip-rule"></div>
+    <div class="strip-body">Cleaning, polishing, and repair included — for as long as you own the piece.</div>
+    <div class="strip-icon"><svg width="38" height="38" viewBox="0 0 38 38" fill="none"><rect x="4" y="4" width="30" height="30" stroke="#1B4F8A" stroke-width="1" rx="2"/><rect x="11" y="11" width="16" height="16" stroke="#1B4F8A" stroke-width="0.6" rx="1"/><circle cx="19" cy="19" r="4" stroke="#1B4F8A" stroke-width="0.6"/></svg></div>
+  </div>
+</div>
+
+<!-- ══ PRODUCTS ══ -->
+<section class="products">
+  <div class="sec-head">
+    <div class="eyebrow sa">THE COLLECTION</div>
+    <div class="sec-title sa d1">Featured Pieces</div>
+    <div class="rule sa d2"></div>
+  </div>
+  <div class="pgrid">
+    <div class="pcard sc">
+      <div class="pimg"><img src="img/img4.jpg" alt="Ring"/><div class="pover">QUICK VIEW</div></div>
+      <div class="pcat">RINGS</div>
+      <div class="pname">The Elara Ring</div>
+      <div class="pprice">$2,400</div>
+    </div>
+    <div class="pcard sc d1">
+      <div class="pimg"><img src="img/img2.jpg" alt="Necklace"/><div class="pover">QUICK VIEW</div></div>
+      <div class="pcat">NECKLACES</div>
+      <div class="pname">Midnight Cascade</div>
+      <div class="pprice">$3,800</div>
+    </div>
+    <div class="pcard sc d2">
+      <div class="pimg"><img src="img/img3.jpg" alt="Bracelet"/><div class="pover">QUICK VIEW</div></div>
+      <div class="pcat">BRACELETS</div>
+      <div class="pname">Soleil Cuff</div>
+      <div class="pprice">$1,950</div>
+    </div>
+    <div class="pcard sc d3">
+      <div class="pimg"><img src="img/img6.jpg" alt="Earrings"/><div class="pover">QUICK VIEW</div></div>
+      <div class="pcat">EARRINGS · ONE OF A KIND</div>
+      <div class="pname">Lumière Drop</div>
+      <div class="pprice">$1,200</div>
+    </div>
+  </div>
+  <div style="text-align:center;margin-top:60px;" class="sa">
+    <button class="btn-outline">VIEW ALL JEWELLERY</button>
+  </div>
+</section>
+
+<!-- ══ BLUE BAND ══ -->
+<div class="dark-band">
+  <div class="sl">
+    <div class="eyebrow" style="color:rgba(181,144,74,0.85);margin-bottom:16px;">THE ATELIER</div>
+    <h2>Made by Hand.<br>Made to Last<br>a Lifetime.</h2>
+    <p>Every reGalia piece is shaped, set, and finished entirely by hand in a private New York studio. No factory. No shortcuts. Just the craft.</p>
+    <button class="btn-ghost-light">DISCOVER THE PROCESS</button>
+  </div>
+  <div class="dark-img sr">
+    <img src="img/img5.jpg" alt="The reGalia Atelier"/>
+  </div>
+</div>
+
+<!-- ══ SERVICES ══ -->
+<div class="services">
+  <div class="svc sa"><span class="svc-mark">✦</span><h4>Complimentary Shipping</h4><p>Free shipping and returns on every US order, wrapped in our signature gift box.</p></div>
+  <div class="svc sa d2"><span class="svc-mark">✦</span><h4>Made to Order</h4><p>Many pieces can be made to your specifications. Contact us to begin.</p></div>
+  <div class="svc sa d4"><span class="svc-mark">✦</span><h4>Lifetime Care</h4><p>Every reGalia piece is backed by our lifetime cleaning and care programme.</p></div>
+</div>
+
+<!-- ══ FOOTER ══ -->
+<footer>
+  <div class="ft">
+    <div>
+      <div class="ft-brand"><span>re</span>GALIA</div>
+      <p class="ft-tag">Fine jewellery, handcrafted<br>in New York City.</p>
+    </div>
+    <div class="ft-col"><h5>JEWELLERY</h5><ul><li><a href="#">Rings</a></li><li><a href="#">Necklaces</a></li><li><a href="#">Bracelets</a></li><li><a href="#">Earrings</a></li></ul></div>
+    <div class="ft-col"><h5>INFORMATION</h5><ul><li><a href="#">Our Story</a></li><li><a href="#">The Atelier</a></li><li><a href="#">Shipping &amp; Returns</a></li><li><a href="#">Contact</a></li></ul></div>
+    <div class="ft-col"><h5>FOLLOW</h5><ul><li><a href="#">Instagram</a></li><li><a href="#">Pinterest</a></li></ul></div>
+  </div>
+  <div class="fb"><span>© 2026 reGALIA · NEW YORK CITY</span><span>PRIVACY POLICY &nbsp;·&nbsp; TERMS</span></div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════════════
+   HERO ENTRANCE
+══════════════════════════════════════════════════════ */
+(function() {
+  const line = document.getElementById('h-line');
+  line.style.transition = 'height 1s cubic-bezier(0.16,1,0.3,1) 200ms';
+  requestAnimationFrame(() => requestAnimationFrame(() => { line.style.height = '56px'; }));
+
+  const heroAnim = (id, delay) => {
+    const el = document.getElementById(id);
+    el.style.transition = `opacity 0.95s ease ${delay}ms, transform 0.95s cubic-bezier(0.16,1,0.3,1) ${delay}ms`;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      el.style.opacity = '1';
+      el.style.transform = 'translateY(0)';
+    }));
+  };
+  setTimeout(() => heroAnim('h-ey',   0),  700);
+  setTimeout(() => heroAnim('h-h1',   0),  950);
+  setTimeout(() => heroAnim('h-sub',  0), 1150);
+  setTimeout(() => heroAnim('h-btns', 0), 1350);
+})();
+
+/* ══════════════════════════════════════════════════════
+   HERO SCROLL-SCALE (zooms as hero exits)
+══════════════════════════════════════════════════════ */
+(function() {
+  const heroImg = document.getElementById('hero-img');
+  const heroSection = heroImg.closest('.hero');
+  window.addEventListener('scroll', () => {
+    const scrollY = window.scrollY;
+    const heroH   = heroSection.offsetHeight;
+    if (scrollY > heroH) return;
+    heroImg.style.transform = `scale(${1 + (scrollY / heroH) * 0.15})`;
+  }, { passive: true });
+})();
+
+/* ══════════════════════════════════════════════════════
+   SCROLL REVEALS (for sections below the sticky split)
+══════════════════════════════════════════════════════ */
+(function() {
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('on'); obs.unobserve(e.target); } });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.sa, .sl, .sr, .sc').forEach(el => obs.observe(el));
+})();
+
+/* ══════════════════════════════════════════════════════
+   STICKY SPLIT — SCROLL-DRIVEN
+   Wrapper 600vh · both columns sticky · 6 panels
+══════════════════════════════════════════════════════ */
+(function() {
+  const NAV_H   = 68;
+  const NUM     = 6;
+  const wrapper = document.getElementById('splitWrapper');
+  const panels  = Array.from(document.querySelectorAll('.panel'));
+  const items   = [
+    document.getElementById('fi-0'),
+    document.getElementById('fi-1'),
+    document.getElementById('fi-2'),
+    document.getElementById('fi-3'),
+    document.getElementById('fi-4'),
+    document.getElementById('fi-5'),
+  ];
+
+  items[0].style.opacity   = '1';
+  items[0].style.transform = 'translateY(0)';
+  panels.forEach((p, i) => {
+    p.style.transform  = i === 0 ? 'translateY(0%)' : 'translateY(100%)';
+    p.style.zIndex     = String(i + 1);
+    p.style.willChange = 'transform';
+  });
+
+  let lastSectionIdx = 0;
+
+  function showItem(newIdx, dir) {
+    const oldEl = items[lastSectionIdx];
+    const newEl = items[newIdx];
+    oldEl.style.transition = 'opacity 0.45s ease, transform 0.45s ease';
+    oldEl.style.opacity    = '0';
+    oldEl.style.transform  = `translateY(${dir < 0 ? 28 : -28}px)`;
+    newEl.style.transition = 'none';
+    newEl.style.opacity    = '0';
+    newEl.style.transform  = `translateY(${dir < 0 ? -28 : 28}px)`;
+    requestAnimationFrame(() => requestAnimationFrame(() => {
+      newEl.style.transition = 'opacity 0.55s ease, transform 0.55s cubic-bezier(0.16,1,0.3,1)';
+      newEl.style.opacity    = '1';
+      newEl.style.transform  = 'translateY(0)';
+    }));
+    lastSectionIdx = newIdx;
+  }
+
+  function updateSplit() {
+    const rect    = wrapper.getBoundingClientRect();
+    const wrapH   = wrapper.offsetHeight;
+    const panelH  = window.innerHeight - NAV_H;
+    const scrolled   = Math.max(0, -(rect.top - NAV_H));
+    const scrollable = wrapH - panelH;
+    const progress   = Math.min(1, scrolled / scrollable);
+    const sp = progress * NUM;
+    const si = Math.min(Math.floor(sp), NUM - 1);
+    const sf = sp - Math.floor(sp);
+
+    if (si !== lastSectionIdx) showItem(si, si > lastSectionIdx ? 1 : -1);
+
+    panels.forEach((p, i) => {
+      if (i < si) {
+        p.style.transform = 'translateY(0%)';
+        p.style.zIndex    = String(i + 1);
+      } else if (i === si) {
+        p.style.transform = 'translateY(0%)';
+        p.style.zIndex    = String(si + 1);
+      } else if (i === si + 1 && si < NUM - 1) {
+        p.style.transform = `translateY(${(1 - sf) * 100}%)`;
+        p.style.zIndex    = String(NUM + 2);
+      } else {
+        p.style.transform = 'translateY(100%)';
+        p.style.zIndex    = String(i + 1);
+      }
+    });
+  }
+
+  window.addEventListener('scroll', updateSplit, { passive: true });
+  updateSplit();
+})();
+
+/* ══════════════════════════════════════════════════════
+   SCROLL-SHRINK IMAGE
+   100vh section · left-anchored · 100% → 55% over 55vh
+══════════════════════════════════════════════════════ */
+(function() {
+  const section = document.getElementById('shrinkSection');
+  const imgWrap = document.getElementById('shrinkImg');
+  if (!section || !imgWrap) return;
+
+  imgWrap.style.width = '62%';
+
+  function updateShrink() {
+    const rect     = section.getBoundingClientRect();
+    const sectionH = section.offsetHeight;
+    const viewH    = window.innerHeight;
+    const scrolled   = Math.max(0, -rect.top);
+    const scrollable = Math.max(1, sectionH - viewH);
+    const progress   = Math.min(1, Math.max(0, scrolled / scrollable));
+
+    /* Phase 1 (0 → 0.4): expand 62% → 92%
+       Phase 2 (0.4 → 1): contract 92% → 28% */
+    let w;
+    if (progress <= 0.4) {
+      w = 62 + (progress / 0.4) * 30;
+    } else {
+      w = 92 - ((progress - 0.4) / 0.6) * 64;
+    }
+    imgWrap.style.width        = w + '%';
+    imgWrap.style.borderRadius = '0';
+  }
+
+  window.addEventListener('scroll', updateShrink, { passive: true });
+  updateShrink();
+})();
+</script>
+</body>
+</html>
