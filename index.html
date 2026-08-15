@@ -161,7 +161,9 @@
     }
     .panel img {
       width: 100%; height: 100%;
-      object-fit: cover; object-position: center top;
+      object-fit: cover; object-position: 55% 28%;
+      transform: scale(1.6);
+      transform-origin: 55% 28%;
       display: block;
     }
 
@@ -316,7 +318,7 @@
       background: var(--text);
     }
     .panel { position: absolute; inset: 0; overflow: hidden; }
-    .panel img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+    .panel img { width: 100%; height: 100%; object-fit: cover; object-position: 55% 28%; transform: scale(1.6); transform-origin: 55% 28%; display: block; }
 
     /* ══════════════════════════
        SCROLL-SHRINK IMAGE
@@ -501,9 +503,10 @@
       width: 100%;
       height: 100%;
       object-fit: cover;
-      object-position: center top;
+      object-position: 55% 28%;
       display: block;
-      transform-origin: center center;
+      transform: scale(1.6);
+      transform-origin: 55% 28%;
     }
 
     .jg-info {
@@ -632,7 +635,9 @@
     .jg-nav-thumb img {
       width: 100%; height: 100%;
       object-fit: cover;
-      object-position: center top;
+      object-position: 55% 28%;
+      transform: scale(1.6);
+      transform-origin: 55% 28%;
     }
 
     .jg-nav-meta { min-width: 0; }
